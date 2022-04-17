@@ -1,7 +1,6 @@
 #include <vector>
 #include <cstdint>
-using namespace std;
-
+using std::vector;
 class Graph {
 public:
     Graph(size_t n_vertex);

@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include "Graph.h"
-
+using std::cin, std::cout, std::string, std::min;
 size_t overlap(string s1, string s2);
 string glue (vector<string> strings);
 
