@@ -5,6 +5,7 @@
 #include "Graph.h"
 
 size_t overlap(string s1, string s2);
+string glue (vector<string> strings);
 
 int main() {
     int n;
@@ -21,9 +22,13 @@ int main() {
             graph.AddEdge(from, to, overlap(strings[from], strings[to]));
         }
     }
-    for (auto i : graph.TravelingSalesman()) {
-        cout << strings[i] << " ";
+    size_t old_i = -1;
+    auto ans = graph.TravelingSalesman();
+    vector<string> strings_in_right_order (strings.size());
+    for (int i = 0; i < strings.size(); i++) {
+        strings_in_right_order[i] = strings[ans[i]];
     }
+    cout << glue(strings_in_right_order);
 }
 
 size_t overlap(string s1, string s2) {
@@ -33,4 +38,13 @@ size_t overlap(string s1, string s2) {
             overlap = i;
     }
     return overlap;
+}
+
+string glue (vector<string> strings) {
+    string glued;
+    for (int i = 0; i < strings.size() - 1; i++) {
+        glued += strings[i].substr(0, strings[i].size() - overlap(strings[i], strings[i + 1]));
+    }
+    glued += strings[strings.size() - 1];
+    return glued;
 }
