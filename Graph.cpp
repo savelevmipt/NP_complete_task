@@ -12,7 +12,7 @@ void Graph::AddEdge(size_t from, size_t to, int length) {
 vector<size_t> Graph::TravelingSalesman() {
     vector<vector<int>> longest_path_len  (1 << n_vertex, vector<int>(n_vertex, INT32_MAX));
     //shortest_path_len[mask][last_vertex] - самый короткий путь, проходящий ровно один раз по каждой из вершин из mask, завершающийся в вершине last_vertex
-    vector<vector<size_t>> prev (1 << n_vertex, vector<size_t>(n_vertex, SIZE_T_MAX));
+    vector<vector<size_t>> prev (1 << n_vertex, vector<size_t>(n_vertex, -1));
 
     for (size_t mask = 1; mask < (1 << n_vertex); mask++) {
         for (size_t last_vertex = 0; last_vertex < n_vertex; last_vertex++) {
@@ -27,7 +27,7 @@ vector<size_t> Graph::TravelingSalesman() {
             for (size_t prev_vertex = 0; prev_vertex < n_vertex; prev_vertex++) {
                 if (prev_vertex == last_vertex || ((1 << prev_vertex) & prev_mask) == 0)
                     continue;
-                if (longest_path_len[prev_mask][prev_vertex] != SIZE_T_MAX && adj_matrix[prev_vertex][last_vertex] != INT32_MAX &&
+                if (longest_path_len[prev_mask][prev_vertex] != -1 && adj_matrix[prev_vertex][last_vertex] != INT32_MAX &&
                 (longest_path_len[prev_mask][prev_vertex] + adj_matrix[prev_vertex][last_vertex] > longest_path_len[mask][last_vertex] || longest_path_len[mask][last_vertex] == INT32_MAX)) {
                     longest_path_len[mask][last_vertex] = longest_path_len[prev_mask][prev_vertex] + adj_matrix[prev_vertex][last_vertex];
                     prev[mask][last_vertex] = prev_vertex;
@@ -37,16 +37,16 @@ vector<size_t> Graph::TravelingSalesman() {
         }
     }
     size_t final_mask = (1 << n_vertex) - 1;
-    size_t best_last_vertex = SIZE_T_MAX;
+    size_t best_last_vertex = -1;
     for (size_t last_vertex = 0; last_vertex < n_vertex; last_vertex++) {
         if (longest_path_len[final_mask][last_vertex] == INT32_MAX)
             continue;
-        if (best_last_vertex == SIZE_T_MAX ||
+        if (best_last_vertex == -1 ||
         longest_path_len[final_mask][best_last_vertex] < longest_path_len[final_mask][last_vertex]) {
             best_last_vertex = last_vertex;
         }
     }
-    if (best_last_vertex == SIZE_T_MAX) {
+    if (best_last_vertex == -1) {
         return {};
     }
     vector<size_t> ans(n_vertex);
