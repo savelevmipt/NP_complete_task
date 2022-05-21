@@ -1,6 +1,0 @@
-language: cpp
-compiler:
-  - clang
-  - gcc
-script:
-  /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --build /Users/savelevaleksandr/CLionProjects/NP-complete_task/cmake-build-debug --target NP_complete_task
